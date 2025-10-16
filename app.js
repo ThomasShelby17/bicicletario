@@ -505,13 +505,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 escapeCsv(registro.dataHoraSaida ? new Date(registro.dataHoraSaida).toLocaleString('pt-BR') : 'Em aberto')
             ]);
 
-            let csvContent = headers.join(\",\") + \"\\r\\n\" + rows.map(e => e.join(\",\")).join(\"\\r\\n\");
+            let csvContent = headers.join(",") + "\r\n" + rows.map(e => e.join(",")).join("\r\n");
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const url = URL.createObjectURL(blob);
-            const link = document.createElement(\"a\");
-            link.setAttribute(\"href\", url);
+            const link = document.createElement("a");
+            link.setAttribute("href", url);
             const selectedDateStr = this.elements.dailyRecordsDateInput.value;
-            link.setAttribute(\"download\", `registros_${selectedDateStr || 'data_selecionada'}.csv`);
+            link.setAttribute("download", `registros_${selectedDateStr || 'data_selecionada'}.csv`);
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -529,8 +529,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const doc = new jsPDF();
             const head = [['Cliente', 'Bicicleta', 'Entrada', 'Saída']];
             const body = this.data.currentDailyRecords.map(({ client, bike, registro }) => [
-                `${client.nome}\\n(${client.cpf})`,
-                `${bike.modelo}\\n(${bike.marca} - ${bike.cor})`,
+                `${client.nome}\n(${client.cpf})`,
+                `${bike.modelo}\n(${bike.marca} - ${bike.cor})`,
                 new Date(registro.dataHoraEntrada).toLocaleString('pt-BR'),
                 registro.dataHoraSaida ? new Date(registro.dataHoraSaida).toLocaleString('pt-BR') : 'Em aberto'
             ]);
@@ -554,7 +554,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderDailyRecords() {
             const selectedDateStr = this.elements.dailyRecordsDateInput.value;
             if (!selectedDateStr) {
-                this.elements.dailyRecordsList.innerHTML = `<p class=\"text-sm text-slate-500 dark:text-slate-400 text-center py-4\">Selecione uma data para ver os registros.</p>`;
+                this.elements.dailyRecordsList.innerHTML = `<p class="text-sm text-slate-500 dark:text-slate-400 text-center py-4">Selecione uma data para ver os registros.</p>`;
                 this.data.currentDailyRecords = [];
                 return;
             }
