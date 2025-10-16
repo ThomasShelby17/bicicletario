@@ -29,6 +29,7 @@ export class RegistrosManager {
         this.elements.dailyRecordsDateInput.addEventListener('change', this.renderDailyRecords.bind(this));
         this.elements.dailyRecordsSearchInput.addEventListener('input', this.renderDailyRecords.bind(this));
         this.elements.dailyRecordsList.addEventListener('click', this.handleRegisterSaida.bind(this));
+        this.elements.dailyRecordsList.addEventListener('change', this.handleActionChange.bind(this));
         this.elements.exportBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             this.toggleExportMenu();
@@ -89,6 +90,131 @@ export class RegistrosManager {
                 Storage.saveRegistros(this.app.data.registros);
                 this.renderDailyRecords();
                 this.app.bicicletasManager.renderClientDetails();
+            }
+        }
+    }
+
+    handleActionChange(e) {
+        if (e.target.classList.contains('action-select')) {
+            const select = e.target;
+            const action = select.value;
+            const registroId = select.dataset.registroId;
+            const clientId = select.dataset.clientId;
+            const bikeId = select.dataset.bikeId;
+            
+            if (!action) return;
+
+            switch(action) {
+                case 'saida':
+                    this.registerSaida(registroId);
+                    break;
+                case 'remover':
+                    this.removerAcesso(registroId);
+                    break;
+                case 'alterar':
+                    this.alterarRegistro(registroId);
+                    break;
+                case 'adicionar':
+                    this.adicionarBike(clientId, registroId);
+                    break;
+            }
+            
+            select.value = '';
+        }
+    }
+
+    registerSaida(registroId) {
+        const registro = this.app.data.registros.find(r => r.id === registroId);
+        if (registro && !registro.dataHoraSaida) {
+            registro.dataHoraSaida = new Date().toISOString();
+            Storage.saveRegistros(this.app.data.registros);
+            this.renderDailyRecords();
+            this.app.bicicletasManager.renderClientDetails();
+        }
+    }
+
+    removerAcesso(registroId) {
+        if (confirm('Tem certeza que deseja remover o acesso desta bicicleta?')) {
+            const registro = this.app.data.registros.find(r => r.id === registroId);
+            if (registro && !registro.dataHoraSaida) {
+                registro.dataHoraSaida = new Date().toISOString();
+                registro.acessoRemovido = true;
+                Storage.saveRegistros(this.app.data.registros);
+                this.renderDailyRecords();
+                this.app.bicicletasManager.renderClientDetails();
+                alert('Acesso removido com sucesso!');
+            }
+        }
+    }
+
+    alterarRegistro(registroId) {
+        const registro = this.app.data.registros.find(r => r.id === registroId);
+        if (!registro) return;
+
+        const novaEntrada = prompt('Digite a nova data/hora de entrada (formato: dd/mm/aaaa hh:mm):', 
+            new Date(registro.dataHoraEntrada).toLocaleString('pt-BR'));
+        
+        if (novaEntrada) {
+            const [dataPart, timePart] = novaEntrada.split(' ');
+            const [dia, mes, ano] = dataPart.split('/');
+            const [hora, minuto] = timePart.split(':');
+            const novaData = new Date(ano, mes - 1, dia, hora, minuto);
+            
+            if (!isNaN(novaData.getTime())) {
+                registro.dataHoraEntrada = novaData.toISOString();
+                Storage.saveRegistros(this.app.data.registros);
+                this.renderDailyRecords();
+                alert('Registro alterado com sucesso!');
+            } else {
+                alert('Data/hora inválida!');
+            }
+        }
+    }
+
+    adicionarBike(clientId, registroId) {
+        const client = this.app.data.clients.find(c => c.id === clientId);
+        if (!client || !client.bicicletas || client.bicicletas.length === 0) {
+            alert('Cliente não tem bicicletas cadastradas.');
+            return;
+        }
+
+        const registroOriginal = this.app.data.registros.find(r => r.id === registroId);
+        
+        const bikesDisponiveis = client.bicicletas.filter(bike => {
+            const temRegistroAberto = this.app.data.registros.some(r => 
+                r.bikeId === bike.id && !r.dataHoraSaida
+            );
+            return !temRegistroAberto;
+        });
+
+        if (bikesDisponiveis.length === 0) {
+            alert('Todas as bicicletas deste cliente já estão com registro aberto.');
+            return;
+        }
+
+        let options = bikesDisponiveis.map((bike, idx) => 
+            `${idx + 1}. ${bike.modelo} (${bike.marca} - ${bike.cor})`
+        ).join('\n');
+        
+        const escolha = prompt(`Escolha uma bicicleta para adicionar:\n${options}\n\nDigite o número:`);
+        
+        if (escolha) {
+            const index = parseInt(escolha) - 1;
+            if (index >= 0 && index < bikesDisponiveis.length) {
+                const bikeSelecionada = bikesDisponiveis[index];
+                const novoRegistro = {
+                    id: Utils.generateUUID(),
+                    dataHoraEntrada: registroOriginal.dataHoraEntrada,
+                    dataHoraSaida: null,
+                    clientId: clientId,
+                    bikeId: bikeSelecionada.id,
+                };
+                this.app.data.registros.push(novoRegistro);
+                Storage.saveRegistros(this.app.data.registros);
+                this.renderDailyRecords();
+                alert('Bicicleta adicionada ao mesmo registro com sucesso!');
+            } else {
+                alert('Opção inválida!');
             }
         }
     }
@@ -188,11 +314,17 @@ export class RegistrosManager {
                             <td class="p-3 align-top text-slate-600 dark:text-slate-300">${registro.dataHoraSaida ? new Date(registro.dataHoraSaida).toLocaleString('pt-BR') : ''}</td>
                             <td class="p-3 align-top">
                                 ${!registro.dataHoraSaida ? `
-                                    <button class="register-saida-btn flex items-center text-sm font-medium text-white bg-red-600 hover:bg-red-700 px-3 py-1 rounded-md shadow-sm transition-colors" data-client-id="${client.id}" data-bike-id="${bike.id}" data-registro-id="${registro.id}">
-                                        <i data-lucide="log-out" class="h-4 w-4 mr-1"></i>
-                                        Registrar Saída
-                                    </button>
-                                ` : '<span class="text-xs font-medium text-green-600 bg-green-100 dark:text-green-400 dark:bg-green-900/50 px-2 py-1 rounded-full">Concluído</span>'}
+                                    <select class="action-select text-sm border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer" 
+                                            data-registro-id="${registro.id}" 
+                                            data-client-id="${client.id}" 
+                                            data-bike-id="${bike.id}">
+                                        <option value="">Selecione uma ação</option>
+                                        <option value="saida">🚪 Registrar Saída</option>
+                                        <option value="remover">🚫 Remover Acesso</option>
+                                        <option value="alterar">✏️ Alterar Registro</option>
+                                        <option value="adicionar">➕ Adicionar Outra Bike</option>
+                                    </select>
+                                ` : `<span class="text-xs font-medium ${registro.acessoRemovido ? 'text-red-600 bg-red-100 dark:text-red-400 dark:bg-red-900/50' : 'text-green-600 bg-green-100 dark:text-green-400 dark:bg-green-900/50'} px-2 py-1 rounded-full">${registro.acessoRemovido ? 'Acesso Removido' : 'Concluído'}</span>`}
                             </td>
                         </tr>
                     `).join('')}

@@ -12,8 +12,13 @@ Sistema completo para gerenciamento de estacionamento de bicicletas, desenvolvid
 
 ### 📊 Controle de Registros
 - ✅ Registro de entrada de bicicletas
-- ✅ Registro de saída de bicicletas
+- ✅ **Dropdown de ações múltiplas:**
+  - 🚪 Registrar saída normal
+  - 🚫 Remover acesso (banimento)
+  - ✏️ Alterar horário de entrada
+  - ➕ Adicionar outra bike do mesmo cliente
 - ✅ Visualização de registros por data
+- ✅ Diferenciação visual (saída normal vs acesso removido)
 - ✅ Histórico completo de movimentação
 - ✅ Exportação para CSV
 - ✅ Exportação para PDF
@@ -60,10 +65,14 @@ O projeto está organizado em módulos para facilitar manutenção:
 2. Clique em "Registrar Entrada" na bicicleta desejada
 3. Confirme o registro com data/hora atual
 
-### Registrar Saída
+### Registrar Saída ou Outras Ações
 1. Vá para aba "Registros Diários"
 2. Selecione a data
-3. Clique em "Registrar Saída" na bicicleta
+3. Use o dropdown de ações para:
+   - 🚪 **Registrar Saída**: Saída normal da bike
+   - 🚫 **Remover Acesso**: Negar acesso/banir cliente
+   - ✏️ **Alterar Registro**: Corrigir horário de entrada
+   - ➕ **Adicionar Outra Bike**: Registrar bike adicional do mesmo cliente
 
 ### Exportar Dados
 1. Na aba "Registros Diários", selecione uma data
@@ -91,8 +100,12 @@ Todos os dados são armazenados localmente no navegador (localStorage). Nenhuma 
 
 ## 📚 Documentação
 
+- `README.md` - Este guia de uso
 - `replit.md` - Documentação técnica completa
 - `ESTRUTURA.md` - Detalhes da arquitetura modular
+- `ORGANIZACAO.md` - Explicação da reorganização
+- `DROPDOWN-ACOES.md` - Guia do dropdown de ações
+- `RESUMO-VISUAL.md` - Resumo visual da estrutura
 - `legado/` - Código anterior para referência
 
 ## 🎯 Desenvolvido para
@@ -101,5 +114,5 @@ Lojas de estacionamento de bicicletas que precisam de um sistema simples e efici
 
 ---
 
-**Versão**: 2.0 (Modular)  
+**Versão**: 2.1 (Modular + Dropdown de Ações)  
 **Última atualização**: 16/10/2025

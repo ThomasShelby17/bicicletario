@@ -44,10 +44,15 @@ Sistema de gerenciamento de bicicletário (Bicicletário Shop) construído com J
 ### 📊 Módulo de Registros (js/registros/)
 - **Registros Diários**:
   - Registrar entrada de bicicletas
-  - Registrar saída de bicicletas
+  - **Dropdown de Ações com 4 opções:**
+    - 🚪 Registrar Saída (saída normal)
+    - 🚫 Remover Acesso (acesso negado/banimento)
+    - ✏️ Alterar Registro (editar data/hora entrada)
+    - ➕ Adicionar Outra Bike (mesmo cliente, mesma hora)
   - Visualizar registros por data
   - Filtrar registros por cliente ou bicicleta
   - Exportar dados para CSV e PDF
+  - Diferenciação visual entre saídas normais e acessos removidos
 
 ### 🔧 Utilitários Compartilhados (js/shared/)
 - **utils.js**: Funções de formatação, validação CPF, geração de UUID
@@ -91,11 +96,18 @@ O código foi organizado em módulos ES6 separados por responsabilidade:
 - Sistema de migração automática de dados antigos
 
 ## Mudanças Recentes
-- **16/10/2025**: Reestruturação completa do código em módulos ES6
+- **16/10/2025 - Dropdown de Ações**: 
+  - Adicionado dropdown seletor na aba "Registros Diários"
+  - 4 opções de ação: Registrar Saída, Remover Acesso, Alterar Registro, Adicionar Outra Bike
+  - Sistema de flags para diferenciar saídas normais de acessos removidos
+  - Validação de dados ao alterar registros
+  - Suporte para múltiplas bikes do mesmo cliente no mesmo horário
+
+- **16/10/2025 - Reestruturação Modular**: 
   - Criada pasta `js/cadastros/` para gerenciamento de clientes e bicicletas
   - Criada pasta `js/registros/` para registros diários
   - Criada pasta `js/shared/` para utilitários compartilhados
-  - Mantido `app.js` legado para referência
+  - Mantido `app.js` legado para referência (movido para pasta `legado/`)
   - Corrigidos erros de sintaxe JavaScript (escape sequences)
 
 - **Setup Inicial**: 
