@@ -1,45 +1,126 @@
 # Sistema de Gerenciamento de Bicicletário
 
 ## Overview
-This is a bicycle parking management system (Bicicletário Shop) built with vanilla JavaScript, HTML, and CSS. The application allows users to manage clients, register bicycles, and track entry/exit records for a bicycle parking facility.
+Sistema de gerenciamento de bicicletário (Bicicletário Shop) construído com JavaScript vanilla, HTML e CSS. A aplicação permite gerenciar clientes, registrar bicicletas e rastrear entradas/saídas de um estacionamento de bicicletas.
 
-## Project Structure
-- `index.html` - Main HTML file with the application UI
-- `app.js` - JavaScript application logic and state management
-- `style.css` - Custom styles and dark mode support
-- `server.py` - Python HTTP server for local development
+## Estrutura do Projeto
 
-## Features
-- **Client Management**: Add and search for clients with CPF validation
-- **Bicycle Registration**: Register multiple bicycles per client
-- **Entry/Exit Tracking**: Record bicycle entry and exit times
-- **Daily Records**: View and filter records by date
-- **Data Export**: Export records to CSV and PDF formats
-- **Dark Mode**: Toggle between light and dark themes
-- **Data Persistence**: Uses browser localStorage for data storage
+```
+📁 PROJETO BICICLETÁRIO
+├── 📄 index.html              # Página HTML principal
+├── 📄 style.css               # Estilos personalizados e dark mode
+├── 📄 server.py              # Servidor HTTP Python para desenvolvimento
+├── 📄 app.js                 # [LEGADO] Código monolítico original
+│
+├── 📁 js/                    # Código JavaScript modular
+│   ├── 📄 app-modular.js    # Aplicação principal (ponto de entrada)
+│   │
+│   ├── 📁 cadastros/        # PASTA DE CADASTROS
+│   │   ├── 📄 clientes.js   # Gerenciamento de clientes
+│   │   └── 📄 bicicletas.js # Gerenciamento de bicicletas
+│   │
+│   ├── 📁 registros/        # PASTA DE REGISTROS
+│   │   └── 📄 registros-diarios.js  # Registros diários de entrada/saída
+│   │
+│   └── 📁 shared/           # UTILITÁRIOS COMPARTILHADOS
+│       ├── 📄 utils.js      # Funções utilitárias (UUID, formatação, validação)
+│       └── 📄 storage.js    # Gerenciamento de localStorage
+```
 
-## Technology Stack
-- Vanilla JavaScript (ES6+)
+## Funcionalidades
+
+### 📋 Módulo de Cadastros (js/cadastros/)
+- **Clientes**: 
+  - Adicionar novos clientes com validação de CPF
+  - Buscar clientes por nome ou CPF
+  - Validação de CPF brasileiro
+  - Formatação automática de CPF e telefone
+
+- **Bicicletas**:
+  - Cadastrar múltiplas bicicletas por cliente
+  - Informações: modelo, marca e cor
+  - Visualizar histórico de movimentação
+
+### 📊 Módulo de Registros (js/registros/)
+- **Registros Diários**:
+  - Registrar entrada de bicicletas
+  - Registrar saída de bicicletas
+  - Visualizar registros por data
+  - Filtrar registros por cliente ou bicicleta
+  - Exportar dados para CSV e PDF
+
+### 🔧 Utilitários Compartilhados (js/shared/)
+- **utils.js**: Funções de formatação, validação CPF, geração de UUID
+- **storage.js**: Gerenciamento centralizado de localStorage, migração de dados
+
+## Stack Tecnológica
+- Vanilla JavaScript (ES6+ Modules)
 - Tailwind CSS (via CDN)
 - Lucide Icons (via CDN)
-- LocalStorage for data persistence
-- jsPDF for PDF export functionality
+- LocalStorage para persistência de dados
+- jsPDF para exportação em PDF
+- Python HTTP Server para desenvolvimento
 
-## Architecture
-The application follows a single-page architecture with:
-- Client-side data management using localStorage
-- Tab-based navigation (Clientes / Registros Diários)
-- Modal dialogs for forms
-- Real-time search and filtering
+## Arquitetura
 
-## Recent Changes
-- Fixed JavaScript syntax errors in escape sequences (CSV/PDF export functions)
-- Set up Python HTTP server for Replit deployment
-- Configured workflow for development
+### Estrutura Modular
+O código foi organizado em módulos ES6 separados por responsabilidade:
 
-## User Preferences
-- Language: Portuguese (Brazil)
-- Application is designed for local bicycle parking shops
+1. **App Principal** (`app-modular.js`)
+   - Inicialização da aplicação
+   - Gerenciamento de tema (dark/light)
+   - Controle de abas
+   - Modais
 
-## Development
-The app runs on port 5000 using a Python HTTP server with cache-control headers disabled to ensure updates are visible immediately.
+2. **Cadastros** (`js/cadastros/`)
+   - Separação de responsabilidades entre clientes e bicicletas
+   - Cada módulo gerencia sua própria interface e lógica
+
+3. **Registros** (`js/registros/`)
+   - Gerenciamento completo de registros diários
+   - Funcionalidades de busca e exportação
+
+4. **Shared** (`js/shared/`)
+   - Código reutilizável
+   - Funções utilitárias
+   - Gerenciamento de dados
+
+### Fluxo de Dados
+- Dados armazenados em localStorage
+- Estrutura separada para clientes (`bicicletario_clients`) e registros (`bicicletario_registros`)
+- Sistema de migração automática de dados antigos
+
+## Mudanças Recentes
+- **16/10/2025**: Reestruturação completa do código em módulos ES6
+  - Criada pasta `js/cadastros/` para gerenciamento de clientes e bicicletas
+  - Criada pasta `js/registros/` para registros diários
+  - Criada pasta `js/shared/` para utilitários compartilhados
+  - Mantido `app.js` legado para referência
+  - Corrigidos erros de sintaxe JavaScript (escape sequences)
+
+- **Setup Inicial**: 
+  - Configurado servidor Python HTTP
+  - Configurado workflow para desenvolvimento
+  - Criado sistema de deploy
+
+## Preferências do Usuário
+- Idioma: Português (Brasil)
+- Aplicação projetada para lojas locais de estacionamento de bicicletas
+- Interface com suporte a tema escuro/claro
+
+## Desenvolvimento
+A aplicação roda na porta 5000 usando servidor HTTP Python com headers de cache-control desabilitados para garantir que as atualizações sejam visíveis imediatamente.
+
+## Como Usar
+
+### Para Desenvolvedores
+1. O servidor inicia automaticamente na porta 5000
+2. Acesse via navegador para usar a aplicação
+3. Código modular facilita manutenção e extensão
+
+### Para Usuários Finais
+1. **Cadastrar Cliente**: Preencha nome, CPF e telefone
+2. **Adicionar Bicicleta**: Selecione cliente e adicione bicicleta
+3. **Registrar Entrada**: Clique em "Registrar Entrada" na bicicleta
+4. **Registrar Saída**: Vá em "Registros Diários" e clique em "Registrar Saída"
+5. **Exportar Dados**: Use os botões de exportação para CSV ou PDF
