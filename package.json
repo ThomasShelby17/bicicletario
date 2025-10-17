@@ -1,0 +1,21 @@
+{
+  "name": "bicicletario",
+  "version": "1.0.0",
+  "description": "Sistema de Gerenciamento de Bicicletário",
+  "type": "module",
+  "scripts": {
+    "start": "python server.py",
+    "dev": "python server.py"
+  },
+  "dependencies": {
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {},
+  "keywords": [
+    "bicicletario",
+    "bike",
+    "management"
+  ],
+  "author": "",
+  "license": "ISC"
+}

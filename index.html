@@ -37,6 +37,9 @@
                     <button id="registros-diarios-tab" class="whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 dark:text-slate-400 dark:hover:text-slate-300 dark:hover:border-slate-600">
                       Registros Diários
                     </button>
+                    <button id="configuracao-tab" class="whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 dark:text-slate-400 dark:hover:text-slate-300 dark:hover:border-slate-600">
+                      Configuração
+                    </button>
                 </nav>
             </div>
         </header>
@@ -172,6 +175,92 @@
             </div>
                 </div>
              </main>
+        </div>
+
+        <div id="configuracao-tab-content" class="hidden">
+            <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="space-y-8">
+                    <!-- Theme Selector Section -->
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
+                        <h2 class="text-lg font-semibold mb-4 flex items-center text-slate-800 dark:text-slate-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-5 w-5 text-blue-600 dark:text-blue-400">
+                                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                            </svg>
+                            Tema
+                        </h2>
+                        <div class="flex gap-3">
+                            <button id="theme-system" class="flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300">
+                                Sistema
+                            </button>
+                            <button id="theme-light" class="flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300">
+                                Claro
+                            </button>
+                            <button id="theme-dark" class="flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300">
+                                Escuro
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Import/Export Section -->
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
+                        <h2 class="text-lg font-semibold mb-4 flex items-center text-slate-800 dark:text-slate-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-5 w-5 text-blue-600 dark:text-blue-400">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="7 10 12 15 17 10"/>
+                                <line x1="12" x2="12" y1="15" y2="3"/>
+                            </svg>
+                            Importar / Exportar Clientes
+                        </h2>
+                        <div class="flex gap-3">
+                            <button id="import-clients-btn" class="flex-1 inline-flex items-center justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 mr-2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                    <polyline points="17 8 12 3 7 8"/>
+                                    <line x1="12" x2="12" y1="3" y2="15"/>
+                                </svg>
+                                Importar (.xlsx / .csv)
+                            </button>
+                            <button id="export-clients-btn" class="flex-1 inline-flex items-center justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 mr-2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                    <polyline points="7 10 12 15 17 10"/>
+                                    <line x1="12" x2="12" y1="15" y2="3"/>
+                                </svg>
+                                Exportar (.csv)
+                            </button>
+                            <input type="file" id="import-file-input" accept=".xlsx,.csv" class="hidden">
+                        </div>
+                    </div>
+
+                    <!-- Client List Section -->
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
+                        <div class="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-6">
+                            <h2 class="text-lg font-semibold flex items-center text-slate-800 dark:text-slate-100">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-5 w-5 text-blue-600 dark:text-blue-400">
+                                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="9" cy="7" r="4"/>
+                                    <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                                </svg>
+                                Gerenciar Clientes
+                            </h2>
+                            <div class="relative w-full md:w-auto">
+                                <label for="config-search-input" class="sr-only">Pesquisar Clientes</label>
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-slate-400">
+                                        <circle cx="11" cy="11" r="8"/>
+                                        <path d="m21 21-4.35-4.35"/>
+                                    </svg>
+                                </div>
+                                <input type="search" id="config-search-input" placeholder="Pesquisar por nome, CPF ou número..." class="block w-full pl-10 pr-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md leading-5 bg-white dark:bg-slate-700 text-sm placeholder-slate-400 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                        </div>
+                        <div id="config-client-list" class="space-y-3">
+                            <!-- Client list will be rendered here -->
+                        </div>
+                    </div>
+                </div>
+            </main>
         </div>
     </div>
 

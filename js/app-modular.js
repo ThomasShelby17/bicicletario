@@ -1,6 +1,7 @@
 import { ClientesManager } from './cadastros/clientes.js';
 import { BicicletasManager } from './cadastros/bicicletas.js';
 import { RegistrosManager } from './registros/registros-diarios.js';
+import { ConfiguracaoManager } from './pages/configuracao.js';
 import { Storage } from './shared/storage.js';
 
 class App {
@@ -16,8 +17,10 @@ class App {
         this.elements = {
             clientesTab: document.getElementById('clientes-tab'),
             registrosDiariosTab: document.getElementById('registros-diarios-tab'),
+            configuracaoTab: document.getElementById('configuracao-tab'),
             clientesTabContent: document.getElementById('clientes-tab-content'),
             registrosDiariosTabContent: document.getElementById('registros-diarios-tab-content'),
+            configuracaoTabContent: document.getElementById('configuracao-tab-content'),
             theme: {
                 toggleBtn: document.getElementById('theme-toggle'),
                 icons: {
@@ -35,6 +38,7 @@ class App {
         this.clientesManager = new ClientesManager(this);
         this.bicicletasManager = new BicicletasManager(this);
         this.registrosManager = new RegistrosManager(this);
+        this.configuracaoManager = new ConfiguracaoManager(this);
         
         this.clientesManager.renderClientList();
         this.addEventListeners();
@@ -42,11 +46,15 @@ class App {
         
         this.registrosManager.elements.dailyRecordsDateInput.value = new Date().toISOString().split('T')[0];
         this.registrosManager.renderDailyRecords();
+        
+        // Make app accessible globally for configuracao manager
+        window.app = this;
     }
 
     addEventListeners() {
         this.elements.clientesTab.addEventListener('click', () => this.switchTab('clientes'));
         this.elements.registrosDiariosTab.addEventListener('click', () => this.switchTab('registros-diarios'));
+        this.elements.configuracaoTab.addEventListener('click', () => this.switchTab('configuracao'));
     }
 
     loadData() {
@@ -91,6 +99,7 @@ class App {
         const tabs = {
             clientes: { btn: this.elements.clientesTab, content: this.elements.clientesTabContent },
             'registros-diarios': { btn: this.elements.registrosDiariosTab, content: this.elements.registrosDiariosTabContent },
+            configuracao: { btn: this.elements.configuracaoTab, content: this.elements.configuracaoTabContent },
         };
 
         Object.values(tabs).forEach(tab => {
@@ -106,6 +115,8 @@ class App {
 
         if (tabName === 'registros-diarios') {
             this.registrosManager.renderDailyRecords();
+        } else if (tabName === 'configuracao') {
+            this.configuracaoManager.renderClientList();
         }
     }
 
